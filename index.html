@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gocase - Loja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/cart.css">
+  <style>
+    :root {
+      --brand-blue: #2563eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ========== ANNOUNCEMENT BAR (faixa superior) ========== */
+    .announcement-bar {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      line-height: 1.2;
+      padding: 8px 16px;
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (min-width: 992px) {
+      .announcement-bar {
+        min-height: 36px;
+        font-size: 0.875rem;
+      }
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .header__container {
+      padding: 12px 0 12px;
+    }
+
+    .header__nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      position: relative;
+      min-height: 44px;
+    }
+
+    .header__nav-left,
+    .header__nav-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .header__nav-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+    }
+
+    .header__item {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .header__item--hamburger {
+      padding: 8px;
+    }
+
+    .header__item--logo {
+      /* centralizado via .header__nav-center */
+    }
+
+    .header__item--icon {
+      padding: 8px;
+    }
+
+    /* Hamburger icon (3 linhas) */
+    .icon-hamburger {
+      width: 24px;
+      height: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .icon-hamburger__lines {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #1a1a1a;
+      border-radius: 1px;
+      box-shadow: 0 6px 0 #1a1a1a, 0 12px 0 #1a1a1a;
+    }
+
+    .logo__wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .logo__wrapper .logo {
+      width: 88px;
+      height: auto;
+      color: var(--brand-blue);
+    }
+
+    .logo__wrapper .logo--img {
+      max-height: 56px;
+      width: auto;
+      object-fit: contain;
+      vertical-align: middle;
+    }
+
+    @media (min-width: 768px) {
+      .logo__wrapper .logo--img {
+        max-height: 64px;
+      }
+    }
+
+    .logo__wrapper h1 {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    .cart-widget svg,
+    .user-widget__icon svg {
+      width: 24px;
+      height: 24px;
+      color: #1a1a1a;
+    }
+
+    .user-widget__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+    }
+
+    .desktop-only {
+      display: none;
+    }
+
+    @media (min-width: 992px) {
+      .desktop-only {
+        display: flex;
+      }
+      .mobile-only {
+        display: none !important;
+      }
+    }
+
+    .mobile-only {
+      display: flex;
+    }
+
+    /* ========== PESQUISA (dentro do header) ========== */
+    .header__search {
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .header__search .search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: #f0f0f0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      width: 100%;
+    }
+
+    .header__search .search-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 0.95rem;
+      color: #1a1a1a;
+      outline: none;
+    }
+
+    .header__search .search-input::placeholder {
+      color: #888;
+    }
+
+    .header__search .search-icon {
+      width: 20px;
+      height: 20px;
+      color: #666;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
+    /* ========== BANNER HERO (full-bleed) ========== */
+    .banner {
+      margin: 0;
+      border-radius: 0;
+      overflow: hidden;
+      width: 100%;
+      display: block;
+    }
+
+    .banner__img {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: top;
+      object-fit: cover;
+    }
+
+    @media (min-width: 992px) {
+      .banner__img {
+        max-height: 420px;
+        object-fit: cover;
+      }
+    }
+
+    /* ========== BADGE PAGAMENTO (Mercado Pago) – colado ao banner e à seção abaixo ========== */
+    .payment-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #fff;
+      margin: 0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+    .payment-badge__text {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+    .payment-badge__logo {
+      height: 24px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* ========== MENU ESFERAS (CATEGORIAS) ========== */
+    .categories-section {
+      background: #fff;
+      padding: 20px 0 24px;
+      margin: 0;
+    }
+
+    .categories-section h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0 16px 16px;
+      color: #1a1a1a;
+    }
+
+    .categories-scroll {
+      display: flex;
+      gap: 20px;
+      padding: 0 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 16px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .categories-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category-item {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #1a1a1a;
+      transition: transform 0.2s;
+    }
+
+    .category-item:active {
+      transform: scale(0.98);
+    }
+
+    .category-circle {
+      width: 72px;
+      height: 72px;
+      border-radius: 9999px;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 8px;
+      border: 2px solid #e5e5e5;
+    }
+
+    .category-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .category-circle .placeholder-icon {
+      width: 32px;
+      height: 32px;
+      color: #999;
+    }
+
+    .category-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-align: center;
+      max-width: 72px;
+      line-height: 1.2;
+    }
+
+    /* ========== VITRINE (ProductCarouselSection) – carrossel horizontal ========== */
+    .product-showcase {
+      background: #fff;
+      padding: 24px 0 28px;
+      margin: 0;
+    }
+
+    .product-showcase:last-of-type {
+      padding-bottom: 32px;
+    }
+
+    .product-showcase__title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      padding: 0 16px 12px;
+      margin: 0;
+    }
+
+    /* Vitrine: altura fixa; body mais compacto para botão "Comprar" mais próximo do preço */
+    .product-showcase__scroll {
+      display: flex;
+      align-items: stretch;
+      flex-direction: row;
+      gap: 12px;
+      padding: 0 16px;
+      height: 368px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .product-showcase__scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ProductCard: layout fixo por regiões — mesma altura e eixos em todos os cards */
+    .product-card {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      min-width: 44vw;
+      max-width: 200px;
+      height: 100%;
+      min-height: 0;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      border: 1px solid rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.15s;
+    }
+
+    .product-card:active {
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Media area: altura fixa igual para todos os cards (200px) */
+    .product-card__image-wrap {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: #f3f5f4;
+      flex-shrink: 0;
+      overflow: hidden;
+      display: block;
+      isolation: isolate;
+    }
+
+    /* Imagem inteira visível (contain), centralizada. --image-scale reduz só a arte para uniformizar tamanho. */
+    .product-card__image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      object-position: center;
+      transform: translate(-50%, -50%) scale(var(--image-scale, 1));
+      transform-origin: center center;
+      display: block;
+      z-index: 1;
+    }
+
+    /* Badge sobre a imagem: canto superior direito, offset consistente */
+    .product-card__badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+      font-size: 0.5625rem;
+      font-weight: 600;
+      padding: 3px 5px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      background: #f97316;
+      color: #fff;
+      line-height: 1.2;
+      white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+    }
+
+    .product-card__badge--urgent {
+      left: 8px;
+      right: auto;
+      background: #dc2626;
+    }
+
+    /* Content area: ocupa o resto do card; CTA empurrado para baixo com margin-top: auto */
+    .product-card__body {
+      padding: 12px 12px 12px;
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Title: 2 linhas máx.; min-width: 0 para permitir wrap e evitar truncamento lateral */
+    .product-card__name {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: #1a1a1a;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin: 0 0 4px;
+      min-height: 1.3em;
+      min-width: 0;
+      flex-shrink: 0;
+      text-align: left;
+    }
+
+    /* Spacer: absorve o espaço variável para o botão ficar sempre na mesma linha em todos os cards */
+    .product-card__spacer {
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Price: começa logo abaixo do título */
+    .product-card__prices {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 0 0 0;
+      min-height: 54px;
+      flex-shrink: 0;
+    }
+
+    .product-card__price-de {
+      font-size: 0.75rem;
+      color: #888;
+      text-decoration: line-through;
+      display: block;
+    }
+
+    .product-card__price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .product-card__price-por {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .product-card__discount {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #16a34a;
+    }
+
+    /* CTA: mais próximo do preço (margin-top 6px) */
+    .product-card__btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 12px;
+      background: #374151;
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 6px;
+      flex-shrink: 0;
+      transition: background 0.2s;
+      box-sizing: border-box;
+    }
+
+    .product-card__btn:hover {
+      background: #1f2937;
+    }
+
+    .product-card__btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      .product-showcase__scroll {
+        gap: 16px;
+      }
+
+      .product-card {
+        min-width: 200px;
+        max-width: 240px;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .product-showcase__title {
+        font-size: 1.125rem;
+        padding: 0 16px 16px;
+      }
+
+      .product-showcase__scroll {
+        gap: 20px;
+      }
+    }
+
+    /* ========== FEEDBACKS / AVALIAÇÕES ========== */
+    .reviews-section {
+      background: #fff;
+      padding: 0 0 32px;
+    }
+
+    .reviews-banner {
+      width: 100%;
+      display: block;
+      border-radius: 0;
+      margin: 0;
+      vertical-align: top;
+    }
+
+    .reviews-banner__img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .reviews-stars-wrap {
+      padding: 14px 16px;
+      text-align: center;
+    }
+
+    .reviews-stars {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .reviews-stars svg {
+      width: 22px;
+      height: 22px;
+      color: #eab308;
+      flex-shrink: 0;
+    }
+
+    .reviews-count {
+      font-size: 0.875rem;
+      color: #666;
+      margin-left: 8px;
+    }
+
+    .reviews-about {
+      padding: 28px 16px 24px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .reviews-about__title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0 0 4px;
+    }
+
+    .reviews-about__subtitle {
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: #444;
+      margin: 0 0 12px;
+    }
+
+    .reviews-about__text {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: #555;
+      margin: 0 0 12px;
+    }
+
+    .reviews-about__link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--brand-blue);
+      text-decoration: underline;
+    }
+
+    .reviews-about__link:hover {
+      color: #1d4ed8;
+    }
+
+    .reviews-carousel {
+      display: flex;
+      flex-direction: row;
+      gap: 14px;
+      padding: 0 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 16px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .reviews-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .review-card {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      min-width: 78vw;
+      max-width: 340px;
+      background: #f8fafc;
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .review-card__head {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .review-card__avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .review-card__meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .review-card__name {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 2px;
+    }
+
+    .review-card__handle {
+      font-size: 0.8125rem;
+      color: #666;
+      margin: 0;
+    }
+
+    .review-card__instagram {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 20px;
+      height: 20px;
+      color: #333;
+      flex-shrink: 0;
+    }
+
+    .review-card__text {
+      font-size: 0.8125rem;
+      line-height: 1.45;
+      color: #444;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .review-card {
+        min-width: 320px;
+        max-width: 380px;
+      }
+
+      .reviews-carousel {
+        gap: 16px;
+      }
+    }
+
+    /* ========== BENEFÍCIOS (premium / fintech style) ========== */
+    .brand-icons {
+      background: linear-gradient(180deg, #f8f9fb 0%, #f2f4f6 100%);
+      padding: 48px 0 56px;
+      margin: 0;
+    }
+
+    .brand-icons__title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 6px;
+      text-align: center;
+      padding: 0 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icons__subtitle {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: #6b7280;
+      margin: 0 0 28px;
+      text-align: center;
+      padding: 0 16px;
+    }
+
+    .brand-icons__carousel-wrap {
+      position: relative;
+      padding: 0 40px;
+      max-width: 100%;
+    }
+
+    .brand-icons__arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      border: none;
+      border-radius: 50%;
+      background: #fff;
+      color: #374151;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      opacity: 0.85;
+      transition: opacity 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .brand-icons__arrow:hover {
+      opacity: 1;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .brand-icons__arrow:active {
+      transform: translateY(-50%) scale(0.97);
+    }
+
+    .brand-icons__arrow svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-icons__arrow--prev {
+      left: 6px;
+    }
+
+    .brand-icons__arrow--next {
+      right: 6px;
+    }
+
+    .brand-icons__row {
+      list-style: none;
+      margin: 0;
+      padding: 0 12px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      gap: 12px;
+      scroll-padding-inline: 12px;
+    }
+
+    .brand-icons__row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .brand-icons__item {
+      flex: 0 0 90%;
+      min-width: 90%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      padding: 22px 20px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 18px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-sizing: border-box;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .brand-icons__item {
+        transition: none;
+      }
+    }
+
+    .brand-icons__item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .brand-icons__item:hover {
+        transform: none;
+      }
+    }
+
+    .brand-icons__icon-chip {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(37, 99, 235, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+      color: #1a1a1a;
+    }
+
+    .brand-icons__icon-chip svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 1.5;
+    }
+
+    .brand-icons__item-title {
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-icons__item p {
+      font-size: 0.8125rem;
+      line-height: 1.55;
+      color: #6b7280;
+      margin: 0;
+      max-width: 100%;
+    }
+
+    .brand-icons__dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 0 16px;
+    }
+
+    .brand-icons__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: none;
+      padding: 0;
+      background: #d1d5db;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .brand-icons__dot:hover {
+      background: #9ca3af;
+    }
+
+    .brand-icons__dot.is-active {
+      background: #374151;
+      transform: scale(1.15);
+    }
+
+    @media (min-width: 768px) {
+      .brand-icons {
+        padding: 56px 0 64px;
+      }
+
+      .brand-icons__title {
+        font-size: 1.625rem;
+        margin-bottom: 8px;
+      }
+
+      .brand-icons__subtitle {
+        margin-bottom: 32px;
+      }
+
+      .brand-icons__carousel-wrap {
+        padding: 0 48px;
+      }
+
+      .brand-icons__arrow {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+      }
+
+      .brand-icons__arrow svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .brand-icons__item {
+        flex: 0 0 88%;
+        min-width: 88%;
+        padding: 24px 24px;
+      }
+
+      .brand-icons__item-title {
+        font-size: 1.125rem;
+      }
+
+      .brand-icons__item p {
+        font-size: 0.875rem;
+      }
+
+      .brand-icons__dots {
+        margin-top: 24px;
+      }
+    }
+
+    /* ========== FOOTER (estrutura original Gocase) ========== */
+    .footer {
+      background: #fff;
+      padding: 40px 0 32px;
+      margin: 0;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .footer .container.footer__container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .footer__row {
+      margin-bottom: 32px;
+    }
+
+    .footer__row--bottom {
+      margin-bottom: 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .footer__block {
+      margin-bottom: 28px;
+    }
+
+    .footer__block:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Newsletter */
+    .footer-newsletter__title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0 0 6px;
+    }
+
+    .footer-newsletter__subtitle {
+      font-size: 0.875rem;
+      color: #555;
+      margin: 0 0 16px;
+      line-height: 1.4;
+    }
+
+    .footer-newsletter__form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 0;
+    }
+
+    .footer-newsletter__input {
+      flex: 1;
+      min-width: 0;
+      height: 44px;
+      padding: 0 14px;
+      font-size: 0.9375rem;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .footer-newsletter__btn {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--brand-blue);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .footer-newsletter__btn:hover {
+      background: #1d4ed8;
+    }
+
+    .footer-newsletter__arrow {
+      width: 20px;
+      height: 18px;
+    }
+
+    /* Social */
+    .footer__social-links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 16px;
+    }
+
+    .footer__social-icons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      padding: 8px;
+    }
+
+    .footer__social-icons:hover {
+      color: var(--brand-blue);
+    }
+
+    .footer__social-icons svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* Nav blocks */
+    .footer__subtitle {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0 0 12px;
+      display: block;
+    }
+
+    .footer__menu {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer__menu li {
+      margin: 0 0 2px;
+    }
+
+    .footer__menu a {
+      display: flex;
+      align-items: center;
+      font-size: 0.9375rem;
+      line-height: 1.4;
+      color: #444;
+      text-decoration: none;
+      padding: 10px 0;
+      min-height: 44px;
+      box-sizing: border-box;
+    }
+
+    .footer__menu a:hover {
+      color: var(--brand-blue);
+    }
+
+    /* Payments */
+    .footer__payments {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 12px;
+      align-items: center;
+    }
+
+    .footer__payments__item {
+      flex: 0 0 auto;
+      width: 55px;
+      height: 35px;
+      background: #fff;
+      border: 1px solid #f5f6f5;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      box-sizing: border-box;
+    }
+
+    .footer__payments__item img,
+    .footer__payments__item svg {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .footer__payments__item span {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #555;
+    }
+
+    /* Copyright */
+    .footer__copyright-title {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0 0 12px;
+      display: block;
+    }
+
+    .footer__copyright-text {
+      font-size: 0.8125rem;
+      line-height: 1.55;
+      color: #666;
+      margin: 0 0 12px;
+    }
+
+    .footer__copyright-text.no-bottom-margin {
+      margin-bottom: 0;
+    }
+
+    /* Security seals */
+    .security-seal__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 12px;
+      align-items: center;
+    }
+
+    .security-seal__item {
+      flex: 0 0 auto;
+      width: 90px;
+      height: 52px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      box-sizing: border-box;
+    }
+
+    .security-seal__item a {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .security-seal__item svg,
+    .security-seal__item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .security-seal__item span.security-seal__fallback {
+      font-size: 0.65rem;
+      color: #666;
+      text-align: center;
+      line-height: 1.2;
+      display: block;
+    }
+
+    .security-seal__item img {
+      display: block;
+    }
+
+    .security-seal__item img[data-failed="true"] {
+      display: none;
+    }
+
+    .security-seal__item img[data-failed="true"] + .security-seal__fallback {
+      display: block;
+    }
+
+    .security-seal__item img:not([data-failed="true"]) + .security-seal__fallback {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .footer {
+        padding: 48px 0 40px;
+      }
+
+      .footer .container.footer__container {
+        padding: 0 24px;
+      }
+
+      .footer__row--main {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 32px 40px;
+      }
+
+      .footer__block--newsletter {
+        grid-column: 1 / -1;
+      }
+
+      .footer__row--bottom {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 24px 40px;
+        align-items: start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- (A) ANNOUNCEMENT BAR - faixa superior -->
+  <div class="announcement-bar" role="banner">
+    Frete Grátis para Todo o Brasil
+  </div>
+
+  <!-- (B)(C) HEADER - linha principal + busca no mesmo container -->
+  <header class="header">
+    <div class="container header__container">
+      <div class="header__nav">
+        <div class="header__nav-left">
+          <a href="#" rel="nofollow" aria-label="Menu" class="header__item header__item--hamburger header__item--mobile">
+            <div class="icon-hamburger">
+              <span class="icon-hamburger__lines"></span>
+            </div>
+          </a>
+        </div>
+        <div class="header__nav-center">
+          <a href="/" aria-label="Home" class="header__item header__item--logo header__item--logo-sudden">
+          <div class="logo__wrapper">
+            <img src="assets/logoanimacase-deitado.png" alt="Animacase" class="logo logo--img" width="160" height="45" loading="eager">
+          </div>
+          </a>
+        </div>
+        <div class="header__nav-right">
+          <a href="/cart" id="cart-toggle" aria-label="Carrinho" class="header__item header__item--icon">
+          <div class="cart-widget">
+            <span class="cart-count" id="cart-count-badge" aria-hidden="true" style="display:none">0</span>
+            <svg viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M19.997 19.438l-0.998-13.974c-0.019-0.262-0.236-0.464-0.499-0.464h-2.293l-3.854-3.854c-0.195-0.195-0.512-0.195-0.707 0l-0.5 0.5c-0.195 0.195-0.195 0.512 0 0.707s0.512 0.195 0.707 0l0.146-0.146 2.793 2.793h-1.586l-4.354-4.354c-0.195-0.195-0.512-0.195-0.707 0l-4.354 4.354h-2.293c-0.262 0-0.48 0.203-0.499 0.464l-1 14c-0.010 0.138 0.038 0.275 0.133 0.376s0.227 0.159 0.366 0.159h19c0 0 0 0 0.001 0 0.276 0 0.5-0.224 0.5-0.5 0-0.021-0.001-0.041-0.004-0.062zM8.5 1.707l3.293 3.293h-6.586l3.293-3.293zM1.037 19l0.929-13h2.034c0 0 0 0 0 0h14.034l0.929 13h-17.926z" fill="currentColor"></path><path d="M10 14c-1.103 0-2.127-0.596-2.884-1.678-0.719-1.028-1.116-2.385-1.116-3.822 0-0.276 0.224-0.5 0.5-0.5s0.5 0.224 0.5 0.5c0 1.234 0.332 2.388 0.935 3.249 0.565 0.807 1.298 1.251 2.065 1.251s1.5-0.444 2.065-1.251c0.603-0.861 0.935-2.015 0.935-3.249 0-0.276 0.224-0.5 0.5-0.5s0.5 0.224 0.5 0.5c0 1.437-0.396 2.795-1.116 3.822-0.757 1.082-1.782 1.678-2.884 1.678z" fill="currentColor"></path></g></svg>
+          </div>
+        </a>
+        <div class="user-widget header__item header__item--icon">
+          <a href="/login" aria-label="User" class="user-widget__icon">
+            <svg viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M9.5 11c-3.033 0-5.5-2.467-5.5-5.5s2.467-5.5 5.5-5.5 5.5 2.467 5.5 5.5-2.467 5.5-5.5 5.5zM9.5 1c-2.481 0-4.5 2.019-4.5 4.5s2.019 4.5 4.5 4.5c2.481 0 4.5-2.019 4.5-4.5s-2.019-4.5-4.5-4.5z" fill="currentColor"></path><path d="M17.5 20h-16c-0.827 0-1.5-0.673-1.5-1.5 0-0.068 0.014-1.685 1.225-3.3 0.705-0.94 1.67-1.687 2.869-2.219 1.464-0.651 3.283-0.981 5.406-0.981s3.942 0.33 5.406 0.981c1.199 0.533 2.164 1.279 2.869 2.219 1.211 1.615 1.225 3.232 1.225 3.3 0 0.827-0.673 1.5-1.5 1.5zM9.5 13c-3.487 0-6.060 0.953-7.441 2.756-1.035 1.351-1.058 2.732-1.059 2.746 0 0.274 0.224 0.498 0.5 0.498h16c0.276 0 0.5-0.224 0.5-0.5-0-0.012-0.023-1.393-1.059-2.744-1.382-1.803-3.955-2.756-7.441-2.756z" fill="currentColor"></path></g></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Busca dentro do mesmo container do header -->
+      <div class="header__search">
+        <div class="search-wrapper">
+          <input type="search" class="search-input" placeholder="O que você está procurando?" aria-label="Pesquisar">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BANNER HERO (full-bleed) -->
+  <section class="banner" aria-label="Banner promocional">
+    <img
+      class="banner__img"
+      src="images/banner-home.png"
+      alt="Animacase - Leve 2, Ganhe +1 Grátis. Use o cupom ANIMACASE10 e ganhe +10% OFF."
+      width="1080"
+      height="720"
+      loading="eager"
+    >
+  </section>
+
+  <!-- BADGE PAGAMENTO: Pague com Mercado Pago -->
+  <div class="payment-badge" aria-label="Formas de pagamento">
+    <span class="payment-badge__text">Pague com</span>
+    <img class="payment-badge__logo" src="https://lojaintegrada.com.br/new-assets/img/mercado-pago-logo.png" alt="Mercado Pago" width="120" height="24" loading="lazy">
+  </div>
+
+  <!-- MENU ESFERAS (CATEGORIAS ANIMES) -->
+  <section class="categories-section">
+    <h2>Animes</h2>
+    <div class="categories-scroll" id="categories-scroll"></div>
+  </section>
+  <script>
+  (function() {
+    var animeCategories = [
+      { title: 'Naruto', slug: 'naruto', imageUrl: 'https://assets.turbologo.com/blog/en/2021/11/14061241/Konoha-symbol.png' },
+      { title: 'Kimetsu No Yaiba', slug: 'kimetsu-no-yaiba', imageUrl: 'https://thumbs.dreamstime.com/b/wallpaper-do-demon-slayer-hd-ilustra%C3%A7%C3%A3o-vetorial-logotipo-realmente-perfeito-para-papel-de-parede-smartphone-242317335.jpg' },
+      { title: 'Jujutsu Kaisen', slug: 'jujutsu-kaisen', imageUrl: 'https://media.gamestop.com/i/gamestop/20007387_ALT03/Jujutsu-Kaisen-Logo-Unisex-Pullover-Hoodie' },
+      { title: 'One Piece', slug: 'one-piece', imageUrl: 'https://i.pinimg.com/564x/2d/dd/38/2ddd3826533554880ba70980b6ba7047.jpg' },
+      { title: 'Dragon Ball', slug: 'dragon-ball', imageUrl: 'https://cdn.worldvectorlogo.com/logos/dragon-ball-z.svg' },
+      { title: 'Bleach', slug: 'bleach', imageUrl: 'https://i.pinimg.com/1200x/46/b8/c2/46b8c2c93721ce3f26dd8ab67aba33ab.jpg' }
+    ];
+    var container = document.getElementById('categories-scroll');
+    if (!container) return;
+    animeCategories.forEach(function(cat) {
+      var a = document.createElement('a');
+      a.href = 'animes/' + cat.slug + '.html';
+      a.className = 'category-item';
+      a.setAttribute('aria-label', 'Categoria ' + cat.title);
+      a.innerHTML = '<div class="category-circle" data-category="' + cat.slug + '"><img src="' + cat.imageUrl + '" alt="' + cat.title + '" width="72" height="72" loading="lazy"></div><span class="category-label">' + cat.title + '</span>';
+      container.appendChild(a);
+    });
+  })();
+  </script>
+
+  <!-- VITRINE 1: Tendências e Lançamentos -->
+  <section class="product-showcase" aria-labelledby="titulo-tendencias">
+    <h2 id="titulo-tendencias" class="product-showcase__title">Tendências e Lançamentos</h2>
+    <div class="product-showcase__scroll">
+      <a href="produto/capa-reflexiva-3m-luffy-gear-5.html" class="product-card" data-product-id="luffy-gear5-3m">
+        <div class="product-card__image-wrap" style="--image-scale: 0.88; --image-offset-y: 0; --image-offset-x: 0;">
+          <span class="product-card__badge">Envio imediato</span>
+          <img class="product-card__image" src="https://tsukiyashop.com/cdn/shop/files/luffy-one-piece-gear-5-anime-phone-case-551946.jpg?v=1754974189&width=600" alt="Capa Reflexiva 3M - Luffy Gear 5" width="400" height="400" loading="lazy">
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__name">Capa Reflexiva 3M - Luffy Gear 5</h3>
+          <div class="product-card__prices">
+            <span class="product-card__price-de">R$ 47,90</span>
+            <div class="product-card__price-row">
+              <span class="product-card__price-por">R$ 34,90</span>
+            </div>
+          </div>
+          <span class="product-card__spacer" aria-hidden="true"></span>
+          <span class="product-card__btn">Comprar</span>
+        </div>
+      </a>
+      <a href="produto/capa-reflexiva-3m-zoro-ancient.html" class="product-card" data-product-id="zoro-ancient-3m">
+        <div class="product-card__image-wrap" style="--image-scale: 0.88; --image-offset-y: 0; --image-offset-x: 0;">
+          <span class="product-card__badge">Envio imediato</span>
+          <img class="product-card__image" src="https://tsukiyashop.com/cdn/shop/files/zoro-ancient-one-piece-anime-phone-case-482436.jpg?v=1754961099&width=600" alt="Capa Reflexiva 3M - Zoro Edição Ancient" width="400" height="400" loading="lazy">
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__name">Capa Reflexiva 3M - Zoro Edição Ancient</h3>
+          <div class="product-card__prices">
+            <span class="product-card__price-de">R$ 47,90</span>
+            <div class="product-card__price-row">
+              <span class="product-card__price-por">R$ 34,90</span>
+            </div>
+          </div>
+          <span class="product-card__spacer" aria-hidden="true"></span>
+          <span class="product-card__btn">Comprar</span>
+        </div>
+      </a>
+      <a href="produto/capa-reflexiva-3m-kokushibo.html" class="product-card" data-product-id="kokushibo-3m">
+        <div class="product-card__image-wrap" style="--image-scale: 0.88; --image-offset-y: 0; --image-offset-x: 0;">
+          <span class="product-card__badge">Envio imediato</span>
+          <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR137.jpg?v=1754654463&width=1445" alt="Capa Reflexiva 3M - Kokushibo" width="400" height="400" loading="lazy">
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__name">Capa Reflexiva 3M - Kokushibo</h3>
+          <div class="product-card__prices">
+            <span class="product-card__price-de">R$ 47,90</span>
+            <div class="product-card__price-row">
+              <span class="product-card__price-por">R$ 34,90</span>
+            </div>
+          </div>
+          <span class="product-card__spacer" aria-hidden="true"></span>
+          <span class="product-card__btn">Comprar</span>
+        </div>
+      </a>
+      <a href="produto/capa-reflexiva-3m-sanemi.html" class="product-card" data-product-id="sanemi-3m">
+        <div class="product-card__image-wrap" style="--image-scale: 1; --image-offset-y: 0; --image-offset-x: 0;">
+          <span class="product-card__badge">Envio imediato</span>
+          <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR09.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Sanemi" width="400" height="400" loading="lazy">
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__name">Capa Reflexiva 3M - Sanemi</h3>
+          <div class="product-card__prices">
+            <span class="product-card__price-de">R$ 47,90</span>
+            <div class="product-card__price-row">
+              <span class="product-card__price-por">R$ 34,90</span>
+            </div>
+          </div>
+          <span class="product-card__spacer" aria-hidden="true"></span>
+          <span class="product-card__btn">Comprar</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- VITRINE 2: Mais Vendidos! -->
+  <section class="product-showcase" aria-labelledby="titulo-mais-vendidos">
+    <h2 id="titulo-mais-vendidos" class="product-showcase__title">Mais Vendidos! 🔥</h2>
+    <div class="product-showcase__scroll">
+      <a href="produto/capa-reflexiva-3m-itachi-uchiha.html" class="product-card" data-product-id="itachi-3m">
+        <div class="product-card__image-wrap" style="--image-scale: 1; --image-offset-y: 0; --image-offset-x: 0;">
+          <span class="product-card__badge">MAIS VENDIDOS</span>
+          <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/HYRZ2.jpg?v=1750844279&width=823" alt="Capa Reflexiva 3M - Itachi Uchiha" width="400" height="400" loading="lazy">
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__name">Capa Reflexiva 3M - Itachi Uchiha</h3>
+          <div class="product-card__prices">
+            <span class="product-card__price-de">R$ 47,90</span>
+            <div class="product-card__price-row">
+              <span class="product-card__price-por">R$ 34,90</span>
+            </div>
+          </div>
+          <span class="product-card__spacer" aria-hidden="true"></span>
+          <span class="product-card__btn">Comprar</span>
+        </div>
+      </a>
+      <a href="produto/capa-reflexiva-3m-tomioka.html" class="product-card" data-product-id="tomioka-3m">
+        <div class="product-card__image-wrap" style="--image-scale: 1; --image-offset-y: 0; --image-offset-x: 0;">
+          <span class="product-card__badge">MAIS VENDIDOS</span>
+          <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR22.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Tomioka" width="400" height="400" loading="lazy">
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__name">Capa Reflexiva 3M - Tomioka</h3>
+          <div class="product-card__prices">
+            <span class="product-card__price-de">R$ 47,90</span>
+            <div class="product-card__price-row">
+              <span class="product-card__price-por">R$ 34,90</span>
+            </div>
+          </div>
+          <span class="product-card__spacer" aria-hidden="true"></span>
+          <span class="product-card__btn">Comprar</span>
+        </div>
+      </a>
+      <a href="produto/capa-reflexiva-3m-satoru-gojo.html" class="product-card" data-product-id="gojo-3m">
+        <div class="product-card__image-wrap" style="--image-scale: 0.88; --image-offset-y: 0; --image-offset-x: 0;">
+          <span class="product-card__badge">MAIS VENDIDOS</span>
+          <img class="product-card__image" src="https://tsukiyashop.com/cdn/shop/files/gojo-anime-phone-case-113264.jpg?v=1754970180&width=600" alt="Capa Reflexiva 3M - Satoru Gojo" width="400" height="400" loading="lazy">
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__name">Capa Reflexiva 3M - Satoru Gojo</h3>
+          <div class="product-card__prices">
+            <span class="product-card__price-de">R$ 47,90</span>
+            <div class="product-card__price-row">
+              <span class="product-card__price-por">R$ 34,90</span>
+            </div>
+          </div>
+          <span class="product-card__spacer" aria-hidden="true"></span>
+          <span class="product-card__btn">Comprar</span>
+        </div>
+      </a>
+      <a href="produto/capa-reflexiva-3m-ichigo-hollow.html" class="product-card" data-product-id="ichigo-hollow-3m">
+        <div class="product-card__image-wrap" style="--image-scale: 0.88; --image-offset-y: 0; --image-offset-x: 0;">
+          <span class="product-card__badge">MAIS VENDIDOS</span>
+          <img class="product-card__image" src="https://tsukiyashop.com/cdn/shop/files/ichigo-hollow-bleach-anime-phone-case-444533.jpg?v=1754968232&width=600" alt="Capa Reflexiva 3M - Ichigo Hollow" width="400" height="400" loading="lazy">
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__name">Capa Reflexiva 3M - Ichigo Hollow</h3>
+          <div class="product-card__prices">
+            <span class="product-card__price-de">R$ 47,90</span>
+            <div class="product-card__price-row">
+              <span class="product-card__price-por">R$ 34,90</span>
+            </div>
+          </div>
+          <span class="product-card__spacer" aria-hidden="true"></span>
+          <span class="product-card__btn">Comprar</span>
+        </div>
+      </a>
+      <a href="produto/capa-reflexiva-3m-toji.html" class="product-card" data-product-id="toji-3m">
+        <div class="product-card__image-wrap" style="--image-scale: 0.88; --image-offset-y: 0; --image-offset-x: 0;">
+          <span class="product-card__badge">MAIS VENDIDOS</span>
+          <img class="product-card__image" src="https://tsukiyashop.com/cdn/shop/files/toji-anime-phone-case-377146.jpg?v=1754966592" alt="Capa Reflexiva 3M - Toji" width="400" height="400" loading="lazy">
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__name">Capa Reflexiva 3M - Toji</h3>
+          <div class="product-card__prices">
+            <span class="product-card__price-de">R$ 47,90</span>
+            <div class="product-card__price-row">
+              <span class="product-card__price-por">R$ 34,90</span>
+            </div>
+          </div>
+          <span class="product-card__spacer" aria-hidden="true"></span>
+          <span class="product-card__btn">Comprar</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FEEDBACKS / AVALIAÇÕES -->
+  <section class="reviews-section" aria-labelledby="reviews-title">
+    <div class="reviews-banner">
+      <img
+        class="reviews-banner__img"
+        src="images/banner-feedbacks.png"
+        alt="Animacase - Leve 2, Ganhe +1 Grátis. Use o cupom ANIMACASE10 e ganhe +10% OFF."
+        width="1200"
+        height="600"
+        loading="lazy"
+      >
+    </div>
+    <div class="reviews-about">
+      <h2 id="reviews-title" class="reviews-about__title">Por que Animacase?</h2>
+      <p class="reviews-about__subtitle">Quem comprou conta.</p>
+      <p class="reviews-about__text">Com produtos incríveis e de qualidade, estamos aqui sempre para valorizar sua identidade. Acreditamos que seu melhor estilo é ser você. #Partiu estampar o mundo. Do nosso jeito, com o seu jeito!</p>
+      <a href="#" class="reviews-about__link">Ver mais</a>
+    </div>
+    <div class="reviews-stars-wrap">
+      <div class="reviews-stars">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <span class="reviews-count">(63.700+ avaliações)</span>
+      </div>
+    </div>
+    <div class="reviews-carousel" id="reviews-carousel">
+      <article class="review-card">
+        <div class="review-card__head">
+          <img class="review-card__avatar" src="https://i.pravatar.cc/88?img=1" alt="">
+          <div class="review-card__meta">
+            <p class="review-card__name">Paloma Nayara</p>
+            <p class="review-card__handle">@pa.nayara</p>
+          </div>
+          <svg class="review-card__instagram" viewBox="0 0 24 24" fill="currentColor" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm5.218-11.162c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <p class="review-card__text">Apaixonada pela minha capinha! 😍❤️ A estampa ficou linda e a qualidade é incrível. Super recomendo 🥰 ✨</p>
+      </article>
+      <article class="review-card">
+        <div class="review-card__head">
+          <img class="review-card__avatar" src="https://i.pravatar.cc/88?img=5" alt="">
+          <div class="review-card__meta">
+            <p class="review-card__name">Tatiane Fraga</p>
+            <p class="review-card__handle">@thatyfraga</p>
+          </div>
+          <svg class="review-card__instagram" viewBox="0 0 24 24" fill="currentColor" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm5.218-11.162c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <p class="review-card__text">Apaixonada pela capa do celular!!! Qualidade incrível e chegou super rápido. Recomendo demais 💜</p>
+      </article>
+      <article class="review-card">
+        <div class="review-card__head">
+          <img class="review-card__avatar" src="https://i.pravatar.cc/88?img=9" alt="">
+          <div class="review-card__meta">
+            <p class="review-card__name">Pri Mansur</p>
+            <p class="review-card__handle">@descobertasdapri</p>
+          </div>
+          <svg class="review-card__instagram" viewBox="0 0 24 24" fill="currentColor" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm5.218-11.162c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <p class="review-card__text">Apaixonada pelas minhas capinhas! Comprei três e todas com ótima qualidade. Já indiquei pra amiga 🥰</p>
+      </article>
+      <article class="review-card">
+        <div class="review-card__head">
+          <img class="review-card__avatar" src="https://i.pravatar.cc/88?img=10" alt="">
+          <div class="review-card__meta">
+            <p class="review-card__name">Dayse Mara</p>
+            <p class="review-card__handle">@dayse.mara</p>
+          </div>
+          <svg class="review-card__instagram" viewBox="0 0 24 24" fill="currentColor" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm5.218-11.162c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <p class="review-card__text">Como eu amo minha capinha ❤️ Personalizada do jeitinho que eu queria. Entrega rápida e produto lindo!</p>
+      </article>
+      <article class="review-card">
+        <div class="review-card__head">
+          <img class="review-card__avatar" src="https://i.pravatar.cc/88?img=16" alt="">
+          <div class="review-card__meta">
+            <p class="review-card__name">Gabriela Costa</p>
+            <p class="review-card__handle">@gabicosta</p>
+          </div>
+          <svg class="review-card__instagram" viewBox="0 0 24 24" fill="currentColor" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm5.218-11.162c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <p class="review-card__text">Segunda compra e não paro por aí! Comprei mais duas capas e amei. Presentei e todo mundo amou ✨</p>
+      </article>
+      <article class="review-card">
+        <div class="review-card__head">
+          <img class="review-card__avatar" src="https://i.pravatar.cc/88?img=20" alt="">
+          <div class="review-card__meta">
+            <p class="review-card__name">Rafael Lima</p>
+            <p class="review-card__handle">@rafalima</p>
+          </div>
+          <svg class="review-card__instagram" viewBox="0 0 24 24" fill="currentColor" aria-label="Instagram"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm5.218-11.162c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <p class="review-card__text">A capa que comprei é outro nível. Proteção boa, estampa linda e encaixa perfeito no celular 📱</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- BENEFÍCIOS (premium / fintech style) -->
+  <div class="brand-icons">
+    <h3 class="brand-icons__title" id="brand-icons-title">Benefícios da Animacase</h3>
+    <p class="brand-icons__subtitle">Tudo pensado para uma compra tranquila.</p>
+    <div class="brand-icons__carousel-wrap">
+      <button type="button" class="brand-icons__arrow brand-icons__arrow--prev" id="brand-icons-prev" aria-label="Benefício anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button type="button" class="brand-icons__arrow brand-icons__arrow--next" id="brand-icons-next" aria-label="Próximo benefício">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <ul class="brand-icons__row" id="brand-icons-carousel" aria-labelledby="brand-icons-title">
+        <li class="brand-icons__item">
+          <div class="brand-icons__icon-chip" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="8" width="14" height="12" rx="1"/>
+              <path d="M16 12h4l2 4v4H16"/>
+              <circle cx="7" cy="20" r="1.5"/>
+              <circle cx="17" cy="20" r="1.5"/>
+            </svg>
+          </div>
+          <h4 class="brand-icons__item-title">Frete Grátis para Todo o Brasil</h4>
+          <p>Envio rápido e seguro para todas as regiões do país, com rastreamento e suporte dedicado.</p>
+        </li>
+        <li class="brand-icons__item">
+          <div class="brand-icons__icon-chip" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M8 12l3 3 6-6"/>
+            </svg>
+          </div>
+          <h4 class="brand-icons__item-title">Garantia de Qualidade</h4>
+          <p>Produtos desenvolvidos com materiais premium e acabamento de alto padrão, garantindo durabilidade e proteção.</p>
+        </li>
+        <li class="brand-icons__item">
+          <div class="brand-icons__icon-chip" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15 9 22 9 17 14 19 22 12 18 5 22 7 14 2 9 9 9"/>
+            </svg>
+          </div>
+          <h4 class="brand-icons__item-title">Personalidade em Cada Detalhe</h4>
+          <p>Capinhas exclusivas inspiradas nos animes mais icônicos, feitas para quem vive a cultura geek.</p>
+        </li>
+        <li class="brand-icons__item">
+          <div class="brand-icons__icon-chip" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="11" width="14" height="10" rx="1"/>
+              <path d="M8 11V7a4 4 0 1 1 8 0v4"/>
+            </svg>
+          </div>
+          <h4 class="brand-icons__item-title">Compra 100% Segura</h4>
+          <p>Ambiente protegido com tecnologia de criptografia e meios de pagamento confiáveis.</p>
+        </li>
+      </ul>
+    </div>
+    <div class="brand-icons__dots" id="brand-icons-dots" role="tablist" aria-label="Benefícios">
+      <button type="button" class="brand-icons__dot is-active" role="tab" aria-selected="true" aria-label="Benefício 1" data-index="0"></button>
+      <button type="button" class="brand-icons__dot" role="tab" aria-selected="false" aria-label="Benefício 2" data-index="1"></button>
+      <button type="button" class="brand-icons__dot" role="tab" aria-selected="false" aria-label="Benefício 3" data-index="2"></button>
+      <button type="button" class="brand-icons__dot" role="tab" aria-selected="false" aria-label="Benefício 4" data-index="3"></button>
+    </div>
+  </div>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container footer__container">
+      <div class="footer__row footer__row--main">
+        <div class="footer__block footer__block--newsletter">
+          <div class="footer-newsletter">
+            <h4 class="footer-newsletter__title">Nós enviamos e-mails incríveis.</h4>
+            <p class="footer-newsletter__subtitle">Saiba primeiro dos nossos lançamentos, coleções e promoções exclusivas.</p>
+            <form id="newsletter_subscriber" class="footer-newsletter__form" accept-charset="UTF-8">
+              <input id="newsletter_email" type="email" name="email" placeholder="Insira seu e-mail" aria-label="Email" class="footer-newsletter__input">
+              <button type="submit" class="footer-newsletter__btn" aria-label="Enviar">
+                <svg class="footer-newsletter__arrow" viewBox="0 0 23 20" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22.911 10.404C22.862 10.534 22.788 10.657 22.683 10.762L14.731 18.715C14.332 19.114 13.684 19.114 13.285 18.715C12.886 18.315 12.886 17.668 13.285 17.269L19.554 11H1C0.448 11 0 10.552 0 9.99999C0 9.44799 0.448 8.99999 1 8.99999H19.555L13.285 2.72999C12.886 2.33099 12.886 1.68299 13.285 1.28399C13.684 0.884991 14.332 0.884991 14.731 1.28399L22.683 9.23599C22.788 9.34199 22.862 9.46499 22.912 9.59599C22.967 9.71999 23 9.85599 23 9.99999C23 10.144 22.967 10.28 22.911 10.404Z" fill="currentColor"/></svg>
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="footer__block footer__block--nav">
+          <span class="footer__subtitle">Sobre a Animacase</span>
+          <ul class="footer__menu">
+            <li><a href="/quem-somos" rel="nofollow">Quem Somos</a></li>
+            <li><a href="/ajuda" rel="nofollow">Central de ajuda</a></li>
+            <li><a href="/privacidade" rel="nofollow">Política de Privacidade</a></li>
+            <li><a href="/termos" rel="nofollow">Termos de Uso</a></li>
+          </ul>
+        </div>
+        <div class="footer__block footer__block--payments">
+          <span class="footer__subtitle">Métodos de Pagamento</span>
+          <ul class="footer__payments">
+            <li class="footer__payments__item" aria-label="Pix">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 30 30" aria-hidden="true"><path fill="#32bcad" d="M 15 1.0996094 C 13.975 1.0996094 12.949922 1.4895313 12.169922 2.2695312 L 7.1894531 7.25 L 7.3398438 7.25 C 8.6098437 7.25 9.7992188 7.740625 10.699219 8.640625 L 14.189453 12.130859 C 14.639453 12.570859 15.360547 12.570859 15.810547 12.130859 L 19.300781 8.640625 C 20.200781 7.740625 21.390156 7.25 22.660156 7.25 L 22.810547 7.25 L 17.830078 2.2695312 C 17.050078 1.4895313 16.025 1.0996094 15 1.0996094 z M 5.6894531 8.75 L 2.2695312 12.169922 C 0.70953125 13.729922 0.70953125 16.270078 2.2695312 17.830078 L 5.6894531 21.25 L 7.3398438 21.25 C 8.2098438 21.25 9.030625 20.910781 9.640625 20.300781 L 13.130859 16.810547 C 14.160859 15.780547 15.839141 15.780547 16.869141 16.810547 L 20.359375 20.300781 C 20.969375 20.910781 21.790156 21.25 22.660156 21.25 L 24.310547 21.25 L 27.730469 17.830078 C 29.290469 16.270078 29.290469 13.729922 27.730469 12.169922 L 24.310547 8.75 L 22.660156 8.75 C 21.790156 8.75 20.969375 9.0892188 20.359375 9.6992188 L 16.869141 13.189453 C 16.359141 13.699453 15.68 13.960938 15 13.960938 C 14.32 13.960938 13.640859 13.699453 13.130859 13.189453 L 9.640625 9.6992188 C 9.030625 9.0892187 8.2098437 8.75 7.3398438 8.75 L 5.6894531 8.75 z M 15 17.539062 C 14.7075 17.539062 14.414453 17.649141 14.189453 17.869141 L 10.699219 21.359375 C 9.7992188 22.259375 8.6098437 22.75 7.3398438 22.75 L 7.1894531 22.75 L 12.169922 27.730469 C 13.729922 29.290469 16.270078 29.290469 17.830078 27.730469 L 22.810547 22.75 L 22.660156 22.75 C 21.390156 22.75 20.200781 22.259375 19.300781 21.359375 L 15.810547 17.869141 C 15.585547 17.649141 15.2925 17.539062 15 17.539062 z"/></svg>
+            </li>
+            <li class="footer__payments__item" aria-label="Visa">
+              <img src="https://img.icons8.com/?size=100&id=47905&format=png&color=1a1f71" alt="Visa" width="40" height="26" loading="lazy">
+            </li>
+            <li class="footer__payments__item" aria-label="Mastercard">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="26" aria-hidden="true"><path fill="#FF5F00" d="M15.245 17.831h-6.49V6.168h6.49v11.663z"/><path fill="#EB001B" d="M9.167 12A7.404 7.404 0 0 1 12 6.169 7.417 7.417 0 0 0 0 12a7.417 7.417 0 0 0 11.999 5.831A7.406 7.406 0 0 1 9.167 12z"/><path fill="#F79E1B" d="M24 12a7.417 7.417 0 0 1-12 5.831c1.725-1.358 2.833-3.465 2.833-5.831S13.725 7.527 12 6.169A7.417 7.417 0 0 1 24 12z"/></svg>
+            </li>
+            <li class="footer__payments__item" aria-label="American Express">
+              <img src="https://www.americanexpress.com/content/dam/amex/us/merchant/supplies-uplift/product/images/img-WEBLOGO1-01.jpg" alt="American Express" width="40" height="26" loading="lazy">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__row footer__row--bottom">
+        <div class="footer__block footer__block--copyright">
+          <div class="footer__copyright">
+            <strong class="footer__copyright-title">Copyright © 2026 Animacase. Todos os direitos reservados.</strong>
+            <p class="footer__copyright-text">Todo o conteúdo do site, todas as fotos, imagens, logotipos, marcas, layout, aqui veiculados são de propriedade exclusiva da GO COMÉRCIO DE ARTIGOS ELETRÔNICOS E ACESSÓRIOS LTDA. É vedada qualquer reprodução, total ou parcial, sem expressa autorização.</p>
+            <p class="footer__copyright-text">Rodovia Fernão Dias, Km 9745, S/N, Bairro Dos Pires - Extrema/MG. Complemento: Condomínio VBI Log, Módulo B1, Galpão G7. CEP: 37640-950. GO COMÉRCIO DE ARTIGOS ELETRÔNICOS E ACESSÓRIOS LTDA 22.165.464/0003-52</p>
+            <p class="footer__copyright-text no-bottom-margin">Os preços dos produtos estão sujeitos a alteração sem aviso prévio.</p>
+          </div>
+        </div>
+        <div class="footer__block footer__block--security">
+          <span class="footer__subtitle">Certificados de Segurança</span>
+          <div class="security-seal">
+            <div class="security-seal__list">
+              <div class="security-seal__item" aria-label="Selo RA1000"><img src="https://s3.sa-east-1.amazonaws.com/mkt.qipu.com.br/qipu/seloRA1000.png" alt="Selo RA1000" width="82" height="40" loading="lazy"><span class="security-seal__fallback">SELO RA1000</span></div>
+              <div class="security-seal__item" aria-label="Compra segura"><img src="https://taquirio.com.br/assets/img/selo_loja_segura.webp" alt="Compra segura" width="82" height="40" loading="lazy"><span class="security-seal__fallback">Compra segura</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function() {
+    var carousel = document.getElementById('reviews-carousel');
+    if (!carousel) return;
+
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) return;
+
+    var cards = carousel.querySelectorAll('.review-card');
+    if (!cards.length) return;
+
+    for (var i = 0; i < cards.length; i++) {
+      carousel.appendChild(cards[i].cloneNode(true));
+    }
+
+    var rafId = null;
+    var paused = false;
+    var pauseEnd = 0;
+    var scrollSpeed = 0.35;
+
+    function tick() {
+      if (paused) {
+        if (Date.now() < pauseEnd) {
+          rafId = requestAnimationFrame(tick);
+          return;
+        }
+        paused = false;
+      }
+      var el = carousel;
+      var maxScroll = el.scrollWidth - el.clientWidth;
+      if (maxScroll <= 0) {
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
+      var half = el.scrollWidth / 2;
+      el.scrollLeft += scrollSpeed;
+      if (el.scrollLeft >= half - 2) {
+        el.scrollLeft = 0;
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function pauseScroll() {
+      paused = true;
+      pauseEnd = Date.now() + 4000;
+    }
+
+    carousel.addEventListener('touchstart', pauseScroll, { passive: true });
+    carousel.addEventListener('touchmove', pauseScroll, { passive: true });
+    carousel.addEventListener('mousedown', pauseScroll);
+    carousel.addEventListener('wheel', pauseScroll, { passive: true });
+
+    rafId = requestAnimationFrame(tick);
+  })();
+
+  /* ----- Carrossel Benefícios da Animacase (premium: peek, dots, setas, auto-scroll) ----- */
+  (function() {
+    var el = document.getElementById('brand-icons-carousel');
+    if (!el) return;
+    var items = el.querySelectorAll('.brand-icons__item');
+    var total = items.length;
+    if (total === 0) return;
+
+    var GAP = 12;
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function getScrollStep() {
+      if (!items[0]) return el.clientWidth;
+      return items[0].getBoundingClientRect().width + GAP;
+    }
+
+    function getCurrentIndex() {
+      var step = getScrollStep();
+      if (step <= 0) return 0;
+      var idx = Math.round(el.scrollLeft / step);
+      return Math.min(total - 1, Math.max(0, idx));
+    }
+
+    function updateDots() {
+      var idx = getCurrentIndex();
+      var i = idx >= total ? 0 : idx < 0 ? total - 1 : idx;
+      var dotsWrap = document.getElementById('brand-icons-dots');
+      if (!dotsWrap) return;
+      var dots = dotsWrap.querySelectorAll('.brand-icons__dot');
+      dots.forEach(function(dot, k) {
+        dot.classList.toggle('is-active', k === i);
+        dot.setAttribute('aria-selected', k === i ? 'true' : 'false');
+      });
+    }
+
+    function scrollToIndex(index, smooth) {
+      var step = getScrollStep();
+      if (step <= 0) return;
+      var i = (index % total + total) % total;
+      var targetLeft = i * step;
+      el.scrollTo({ left: targetLeft, behavior: (smooth && !reducedMotion) ? 'smooth' : 'auto' });
+    }
+
+    var paused = false;
+    var pauseUntil = 0;
+    var INTERVAL_MS = 3500;
+    var PAUSE_MS = 5000;
+    var intervalId = null;
+
+    function goToNext() {
+      if (paused && Date.now() < pauseUntil) return;
+      if (paused) paused = false;
+      var current = getCurrentIndex();
+      var next = (current + 1) % total;
+      scrollToIndex(next, true);
+    }
+
+    function pauseAutoScroll() {
+      paused = true;
+      pauseUntil = Date.now() + PAUSE_MS;
+    }
+
+    function startInterval() {
+      if (reducedMotion || intervalId != null) return;
+      intervalId = setInterval(goToNext, INTERVAL_MS);
+    }
+
+    el.addEventListener('touchstart', pauseAutoScroll, { passive: true });
+    el.addEventListener('touchmove', pauseAutoScroll, { passive: true });
+    el.addEventListener('mousedown', pauseAutoScroll);
+    el.addEventListener('wheel', pauseAutoScroll, { passive: true });
+    el.addEventListener('scroll', updateDots, { passive: true });
+
+    updateDots();
+    startInterval();
+
+    var prevBtn = document.getElementById('brand-icons-prev');
+    var nextBtn = document.getElementById('brand-icons-next');
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function() {
+        pauseAutoScroll();
+        var prev = (getCurrentIndex() - 1 + total) % total;
+        scrollToIndex(prev, true);
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function() {
+        pauseAutoScroll();
+        goToNext();
+      });
+    }
+
+    var dotsWrap = document.getElementById('brand-icons-dots');
+    if (dotsWrap) {
+      dotsWrap.querySelectorAll('.brand-icons__dot').forEach(function(dot) {
+        dot.addEventListener('click', function() {
+          var idx = parseInt(dot.getAttribute('data-index'), 10);
+          if (!isNaN(idx)) {
+            pauseAutoScroll();
+            scrollToIndex(idx, true);
+          }
+        });
+      });
+    }
+  })();
+
+  /* Fallback para ícones do footer quando a imagem não carrega */
+  (function() {
+    function handleIconError(img) {
+      img.setAttribute('data-failed', 'true');
+      var next = img.nextElementSibling;
+      if (next && next.classList.contains('security-seal__fallback')) next.style.display = 'block';
+    }
+    document.querySelectorAll('.footer__payments__item img, .security-seal__item img').forEach(function(img) {
+      img.addEventListener('error', function() { handleIconError(img); });
+      if (img.complete && img.naturalWidth === 0) handleIconError(img);
+    });
+  })();
+  </script>
+  <script src="js/cart.js"></script>
+</body>
+</html>

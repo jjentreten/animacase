@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kimetsu no Yaiba | Animacase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/cart.css">
+  <style>
+    :root { --brand-blue: #2563eb; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; color: #1a1a1a; min-height: 100vh; }
+
+    /* ========== ANNOUNCEMENT BAR (faixa superior) ========== */
+    .announcement-bar {
+      background: #000;
+      color: #fff;
+      text-align: center;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      line-height: 1.2;
+      padding: 8px 16px;
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (min-width: 992px) {
+      .announcement-bar {
+        min-height: 36px;
+        font-size: 0.875rem;
+      }
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+    .header__container {
+      padding: 12px 0 12px;
+    }
+    .header__nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      position: relative;
+      min-height: 44px;
+    }
+    .header__nav-left,
+    .header__nav-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .header__nav-center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+    }
+    .header__item {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+    .header__item--hamburger {
+      padding: 8px;
+    }
+    .header__item--logo {
+      /* centralizado via .header__nav-center */
+    }
+    .header__item--icon {
+      padding: 8px;
+    }
+    .icon-hamburger {
+      width: 24px;
+      height: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .icon-hamburger__lines {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #1a1a1a;
+      border-radius: 1px;
+      box-shadow: 0 6px 0 #1a1a1a, 0 12px 0 #1a1a1a;
+    }
+    .logo__wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .logo__wrapper .logo {
+      width: 88px;
+      height: auto;
+      color: var(--brand-blue);
+    }
+    .logo__wrapper .logo--img {
+      max-height: 56px;
+      width: auto;
+      object-fit: contain;
+      vertical-align: middle;
+    }
+    @media (min-width: 768px) {
+      .logo__wrapper .logo--img {
+        max-height: 64px;
+      }
+    }
+    .logo__wrapper h1 {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+    .cart-widget svg,
+    .user-widget__icon svg {
+      width: 24px;
+      height: 24px;
+      color: #1a1a1a;
+    }
+    .user-widget__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+    }
+    /* ========== PESQUISA (dentro do header) ========== */
+    .header__search {
+      margin-top: 10px;
+      width: 100%;
+    }
+    .header__search .search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: #f0f0f0;
+      border-radius: 12px;
+      padding: 12px 16px;
+      width: 100%;
+    }
+    .header__search .search-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 0.95rem;
+      color: #1a1a1a;
+      outline: none;
+    }
+    .header__search .search-input::placeholder {
+      color: #888;
+    }
+    .header__search .search-icon {
+      width: 20px;
+      height: 20px;
+      color: #666;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
+    /* ========== COLEÇÃO (hero + grid) ========== */
+    .category-page { padding: 24px 16px 48px; max-width: 1200px; margin: 0 auto; }
+    .category-hero { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #e5e7eb; }
+    .category-hero__head { margin-bottom: 16px; }
+    .category-hero__title { font-size: 1.625rem; font-weight: 700; color: #1a1a1a; margin: 0; letter-spacing: -0.02em; line-height: 1.25; }
+    .category-hero__subtitle { font-size: 0.875rem; color: #6b7280; margin: 4px 0 0; line-height: 1.4; }
+    .category-hero__actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+    .category-hero__count { font-size: 0.75rem; font-weight: 500; color: #6b7280; background: #f3f4f6; padding: 5px 10px; border-radius: 6px; }
+    .category-hero__sort { display: flex; align-items: center; gap: 8px; }
+    .category-hero__sort-label { font-size: 0.8125rem; color: #6b7280; margin: 0; }
+    .category-hero__sort-select { font-size: 0.875rem; color: #374151; padding: 8px 32px 8px 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L2 4h8z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+    .category-hero__sort-select:focus { outline: none; border-color: var(--brand-blue); }
+    @media (min-width: 768px) { .category-hero__title { font-size: 1.875rem; } .category-hero__head { margin-bottom: 18px; } }
+
+    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; list-style: none; margin: 0; padding: 0; align-items: stretch; }
+    .product-grid > li { margin: 0; padding: 0; display: flex; }
+    @media (min-width: 600px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+    @media (min-width: 992px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
+
+    .product-card { height: 100%; min-height: 0; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 1px 2px rgba(0,0,0,0.04); display: flex; flex-direction: column; text-decoration: none; color: inherit; transition: box-shadow 0.2s, border-color 0.2s; }
+    .product-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.08); }
+    .product-card__image-wrap { position: relative; width: 100%; height: 0; padding-bottom: 100%; background: #f3f5f4; flex-shrink: 0; overflow: hidden; display: block; isolation: isolate; }
+    .product-card__image { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(var(--image-scale, 1)) translateY(var(--image-offset-y, 0)) translateX(var(--image-offset-x, 0)); transform-origin: center center; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; object-position: center; display: block; z-index: 1; }
+    .product-card__badge { position: absolute; top: 8px; right: 8px; z-index: 2; font-size: 0.5625rem; font-weight: 600; padding: 3px 5px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.03em; background: #f97316; color: #fff; line-height: 1.2; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.12); }
+    .product-card__body { padding: 12px 14px 14px; flex: 1 1 auto; display: flex; flex-direction: column; min-width: 0; min-height: 172px; }
+    .product-card__name { font-size: 0.8125rem; font-weight: 500; color: #1a1a1a; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 0 0 4px; min-height: 2.7em; flex-shrink: 0; text-align: left; }
+    .product-card__prices { display: flex; flex-direction: column; gap: 2px; margin: 0 0 12px; min-height: 54px; flex-shrink: 0; }
+    .product-card__price-de { font-size: 0.6875rem; color: #9ca3af; text-decoration: line-through; }
+    .product-card__price-row { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+    .product-card__price-por { font-size: 1rem; font-weight: 700; color: #1a1a1a; }
+    .product-card__btn { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 44px; padding: 8px 12px; background: #1a1a1a; color: #fff; font-size: 0.8125rem; font-weight: 600; border: none; border-radius: 8px; margin-top: auto; flex-shrink: 0; transition: background 0.2s; box-sizing: border-box; pointer-events: none; }
+    .product-card:hover .product-card__btn { background: #374151; }
+    @media (min-width: 768px) { .category-hero__title { font-size: 1.875rem; } .product-card__body { padding: 14px 16px 16px; } .product-card__name { font-size: 0.875rem; } }
+
+    .footer { background: #fff; padding: 40px 0 32px; margin: 0; border-top: 1px solid rgba(0,0,0,0.08); }
+    .footer .container.footer__container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+    .footer__row { margin-bottom: 32px; }
+    .footer__row--bottom { margin-bottom: 0; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.08); }
+    .footer__block { margin-bottom: 28px; }
+    .footer__block:last-child { margin-bottom: 0; }
+    .footer-newsletter__title { font-size: 1rem; font-weight: 700; color: #1a1a1a; margin: 0 0 6px; }
+    .footer-newsletter__subtitle { font-size: 0.875rem; color: #555; margin: 0 0 16px; line-height: 1.4; }
+    .footer-newsletter__form { display: flex; gap: 8px; margin-bottom: 0; }
+    .footer-newsletter__input { flex: 1; min-width: 0; height: 44px; padding: 0 14px; font-size: 0.9375rem; border: 1px solid rgba(0,0,0,0.15); border-radius: 8px; box-sizing: border-box; }
+    .footer-newsletter__btn { flex-shrink: 0; width: 44px; height: 44px; padding: 0; display: flex; align-items: center; justify-content: center; background: var(--brand-blue); color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+    .footer-newsletter__btn:hover { background: #1d4ed8; }
+    .footer-newsletter__arrow { width: 20px; height: 18px; }
+    .footer__subtitle { font-size: 1rem; font-weight: 700; color: #1a1a1a; margin: 0 0 12px; display: block; }
+    .footer__menu { list-style: none; margin: 0; padding: 0; }
+    .footer__menu li { margin: 0 0 2px; }
+    .footer__menu a { display: flex; align-items: center; font-size: 0.9375rem; line-height: 1.4; color: #444; text-decoration: none; padding: 10px 0; min-height: 44px; box-sizing: border-box; }
+    .footer__menu a:hover { color: var(--brand-blue); }
+    .footer__payments { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: center; }
+    .footer__payments__item { flex: 0 0 auto; width: 55px; height: 35px; background: #fff; border: 1px solid #f5f6f5; border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 4px; box-sizing: border-box; }
+    .footer__payments__item img, .footer__payments__item svg { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+    .footer__copyright-title { font-size: 0.9375rem; font-weight: 700; color: #1a1a1a; margin: 0 0 12px; display: block; }
+    .footer__copyright-text { font-size: 0.8125rem; line-height: 1.55; color: #666; margin: 0 0 12px; }
+    .footer__copyright-text.no-bottom-margin { margin-bottom: 0; }
+    .security-seal__list { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: center; }
+    .security-seal__item { flex: 0 0 auto; width: 90px; height: 52px; background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 6px; box-sizing: border-box; }
+    .security-seal__item img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+    .security-seal__item span.security-seal__fallback { font-size: 0.65rem; color: #666; text-align: center; line-height: 1.2; display: block; }
+    @media (min-width: 768px) { .footer { padding: 48px 0 40px; } .footer .container.footer__container { padding: 0 24px; } .footer__row--main { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px 40px; } .footer__block--newsletter { grid-column: 1 / -1; } .footer__row--bottom { display: grid; grid-template-columns: 1fr auto; gap: 24px 40px; align-items: start; } }
+  </style>
+</head>
+<body>
+  <div class="announcement-bar" role="banner">
+    Frete Grátis para Todo o Brasil
+  </div>
+
+  <header class="header">
+    <div class="container header__container">
+      <div class="header__nav">
+        <div class="header__nav-left">
+          <a href="#" rel="nofollow" aria-label="Menu" class="header__item header__item--hamburger header__item--mobile">
+            <div class="icon-hamburger">
+              <span class="icon-hamburger__lines"></span>
+            </div>
+          </a>
+        </div>
+        <div class="header__nav-center">
+          <a href="../index.html" aria-label="Home" class="header__item header__item--logo header__item--logo-sudden">
+            <div class="logo__wrapper">
+              <img src="../assets/logoanimacase-deitado.png" alt="Animacase" class="logo logo--img" width="160" height="45" loading="eager">
+            </div>
+          </a>
+        </div>
+        <div class="header__nav-right">
+          <a href="#" id="cart-toggle" aria-label="Carrinho" class="header__item header__item--icon">
+            <div class="cart-widget">
+              <span class="cart-count" aria-hidden="true" style="display:none">0</span>
+              <svg viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M19.997 19.438l-0.998-13.974c-0.019-0.262-0.236-0.464-0.499-0.464h-2.293l-3.854-3.854c-0.195-0.195-0.512-0.195-0.707 0l-0.5 0.5c-0.195 0.195-0.195 0.512 0 0.707s0.512 0.195 0.707 0l0.146-0.146 2.793 2.793h-1.586l-4.354-4.354c-0.195-0.195-0.512-0.195-0.707 0l-4.354 4.354h-2.293c-0.262 0-0.48 0.203-0.499 0.464l-1 14c-0.010 0.138 0.038 0.275 0.133 0.376s0.227 0.159 0.366 0.159h19c0 0 0 0 0.001 0 0.276 0 0.5-0.224 0.5-0.5 0-0.021-0.001-0.041-0.004-0.062zM8.5 1.707l3.293 3.293h-6.586l3.293-3.293zM1.037 19l0.929-13h2.034c0 0 0 0 0 0h14.034l0.929 13h-17.926z" fill="currentColor"></path><path d="M10 14c-1.103 0-2.127-0.596-2.884-1.678-0.719-1.028-1.116-2.385-1.116-3.822 0-0.276 0.224-0.5 0.5-0.5s0.5 0.224 0.5 0.5c0 1.234 0.332 2.388 0.935 3.249 0.565 0.807 1.298 1.251 2.065 1.251s1.5-0.444 2.065-1.251c0.603-0.861 0.935-2.015 0.935-3.249 0-0.276 0.224-0.5 0.5-0.5s0.5 0.224 0.5 0.5c0 1.437-0.396 2.795-1.116 3.822-0.757 1.082-1.782 1.678-2.884 1.678z" fill="currentColor"></path></g></svg>
+            </div>
+          </a>
+          <div class="user-widget header__item header__item--icon">
+            <a href="/login" aria-label="User" class="user-widget__icon">
+              <svg viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><path d="M9.5 11c-3.033 0-5.5-2.467-5.5-5.5s2.467-5.5 5.5-5.5 5.5 2.467 5.5 5.5-2.467 5.5-5.5 5.5zM9.5 1c-2.481 0-4.5 2.019-4.5 4.5s2.019 4.5 4.5 4.5c2.481 0 4.5-2.019 4.5-4.5s-2.019-4.5-4.5-4.5z" fill="currentColor"></path><path d="M17.5 20h-16c-0.827 0-1.5-0.673-1.5-1.5 0-0.068 0.014-1.685 1.225-3.3 0.705-0.94 1.67-1.687 2.869-2.219 1.464-0.651 3.283-0.981 5.406-0.981s3.942 0.33 5.406 0.981c1.199 0.533 2.164 1.279 2.869 2.219 1.211 1.615 1.225 3.232 1.225 3.3 0 0.827-0.673 1.5-1.5 1.5zM9.5 13c-3.487 0-6.060 0.953-7.441 2.756-1.035 1.351-1.058 2.732-1.059 2.746 0 0.274 0.224 0.498 0.5 0.498h16c0.276 0 0.5-0.224 0.5-0.5-0-0.012-0.023-1.393-1.059-2.744-1.382-1.803-3.955-2.756-7.441-2.756z" fill="currentColor"></path></g></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="header__search">
+        <div class="search-wrapper">
+          <input type="search" class="search-input" placeholder="O que você está procurando?" aria-label="Pesquisar">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="category-page">
+    <header class="category-hero">
+      <div class="category-hero__head">
+        <h1 class="category-hero__title">Kimetsu no Yaiba</h1>
+        <p class="category-hero__subtitle">Capas Reflexivas 3M</p>
+      </div>
+      <div class="category-hero__actions" role="group" aria-label="Filtros e ordenação">
+        <span class="category-hero__count">19 produtos</span>
+        <div class="category-hero__sort">
+          <label for="category-sort" class="category-hero__sort-label">Ordenar:</label>
+          <select id="category-sort" class="category-hero__sort-select" aria-label="Ordenar por">
+            <option value="bestseller">Mais vendidos</option>
+            <option value="price-asc">Menor preço</option>
+            <option value="price-desc">Maior preço</option>
+            <option value="newest">Novidades</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <ul class="product-grid" aria-label="Produtos da coleção Kimetsu no Yaiba">
+      <li>
+        <a href="../produto/capa-reflexiva-3m-tanjiro.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://cdn.shopify.com/s/files/1/0940/9019/9113/files/GMZR04.jpg?v=1748611008" alt="Capa Reflexiva 3M - Tanjiro" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Tanjiro</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-nezuko.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://cdn.shopify.com/s/files/1/0940/9019/9113/files/GMZR01.jpg?v=1748611008" alt="Capa Reflexiva 3M - Nezuko" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Nezuko</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-zenitsu.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR03.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Zenitsu" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Zenitsu</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-inosuke.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR16.jpg?v=1754654463&width=1445" alt="Capa Reflexiva 3M - Inosuke" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Inosuke</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-sanemi.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR09.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Sanemi" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Sanemi</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-rengoku.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR10.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Rengoku" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Rengoku</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-mitsuri.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR11.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Mitsuri" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Mitsuri</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-obanai.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR20.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Obanai" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Obanai</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-tomioka.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR22.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Tomioka" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Tomioka</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-shinobu.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://cdn.shopify.com/s/files/1/0940/9019/9113/files/GMZR32.jpg?v=1748611008" alt="Capa Reflexiva 3M - Shinobu" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Shinobu</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-muichiro-tokito.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR40.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Muichiro Tokito" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Muichiro Tokito</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-uzui.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR68.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Uzui" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Uzui</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-yoriichi.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR31.jpg?v=1754654463" alt="Capa Reflexiva 3M - Yoriichi" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Yoriichi</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-gyomei-himejima.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR37.jpg?v=1754654463&width=416" alt="Capa Reflexiva 3M - Gyomei Himejima" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Gyomei Himejima</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-douma.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR12.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Douma" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Douma</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-daki-gyuutarou.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://cdn.shopify.com/s/files/1/0940/9019/9113/files/GMZR21.jpg?v=1748611008" alt="Capa Reflexiva 3M - Daki e Gyuutarou" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Daki e Gyuutarou</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-muzan.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR26.jpg?v=1754654463&width=1946" alt="Capa Reflexiva 3M - Muzan" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Muzan</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-kokushibo.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://www.gagacase.com/cdn/shop/files/GMZR137.jpg?v=1754654463&width=1445" alt="Capa Reflexiva 3M - Kokushibo" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Kokushibo</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="../produto/capa-reflexiva-3m-akaza.html" class="product-card">
+          <div class="product-card__image-wrap">
+            <span class="product-card__badge">Envio imediato</span>
+            <img class="product-card__image" src="https://cdn.shopify.com/s/files/1/0940/9019/9113/files/GMZR160.jpg?v=1753888697" alt="Capa Reflexiva 3M - Akaza" width="400" height="400" loading="lazy">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">Capa Reflexiva 3M - Akaza</h3>
+            <div class="product-card__prices">
+              <span class="product-card__price-de">R$ 47,90</span>
+              <div class="product-card__price-row">
+                <span class="product-card__price-por">R$ 34,90</span>
+              </div>
+            </div>
+            <span class="product-card__btn">Comprar</span>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="container footer__container">
+      <div class="footer__row footer__row--main">
+        <div class="footer__block footer__block--newsletter">
+          <div class="footer-newsletter">
+            <h4 class="footer-newsletter__title">Nós enviamos e-mails incríveis.</h4>
+            <p class="footer-newsletter__subtitle">Saiba primeiro dos nossos lançamentos, coleções e promoções exclusivas.</p>
+            <form id="newsletter_subscriber" class="footer-newsletter__form" accept-charset="UTF-8">
+              <input id="newsletter_email" type="email" name="email" placeholder="Insira seu e-mail" aria-label="Email" class="footer-newsletter__input">
+              <button type="submit" class="footer-newsletter__btn" aria-label="Enviar">
+                <svg class="footer-newsletter__arrow" viewBox="0 0 23 20" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M22.911 10.404C22.862 10.534 22.788 10.657 22.683 10.762L14.731 18.715C14.332 19.114 13.684 19.114 13.285 18.715C12.886 18.315 12.886 17.668 13.285 17.269L19.554 11H1C0.448 11 0 10.552 0 9.99999C0 9.44799 0.448 8.99999 1 8.99999H19.555L13.285 2.72999C12.886 2.33099 12.886 1.68299 13.285 1.28399C13.684 0.884991 14.332 0.884991 14.731 1.28399L22.683 9.23599C22.788 9.34199 22.862 9.46499 22.912 9.59599C22.967 9.71999 23 9.85599 23 9.99999C23 10.144 22.967 10.28 22.911 10.404Z" fill="currentColor"/></svg>
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="footer__block footer__block--nav">
+          <span class="footer__subtitle">Sobre a Animacase</span>
+          <ul class="footer__menu">
+            <li><a href="/quem-somos" rel="nofollow">Quem Somos</a></li>
+            <li><a href="/ajuda" rel="nofollow">Central de ajuda</a></li>
+            <li><a href="/privacidade" rel="nofollow">Política de Privacidade</a></li>
+            <li><a href="/termos" rel="nofollow">Termos de Uso</a></li>
+          </ul>
+        </div>
+        <div class="footer__block footer__block--payments">
+          <span class="footer__subtitle">Métodos de Pagamento</span>
+          <ul class="footer__payments">
+            <li class="footer__payments__item" aria-label="Pix">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 30 30" aria-hidden="true"><path fill="#32bcad" d="M 15 1.0996094 C 13.975 1.0996094 12.949922 1.4895313 12.169922 2.2695312 L 7.1894531 7.25 L 7.3398438 7.25 C 8.6098437 7.25 9.7992188 7.740625 10.699219 8.640625 L 14.189453 12.130859 C 14.639453 12.570859 15.360547 12.570859 15.810547 12.130859 L 19.300781 8.640625 C 20.200781 7.740625 21.390156 7.25 22.660156 7.25 L 22.810547 7.25 L 17.830078 2.2695312 C 17.050078 1.4895313 16.025 1.0996094 15 1.0996094 z M 5.6894531 8.75 L 2.2695312 12.169922 C 0.70953125 13.729922 0.70953125 16.270078 2.2695312 17.830078 L 5.6894531 21.25 L 7.3398438 21.25 C 8.2098438 21.25 9.030625 20.910781 9.640625 20.300781 L 13.130859 16.810547 C 14.160859 15.780547 15.839141 15.780547 16.869141 16.810547 L 20.359375 20.300781 C 20.969375 20.910781 21.790156 21.25 22.660156 21.25 L 24.310547 21.25 L 27.730469 17.830078 C 29.290469 16.270078 29.290469 13.729922 27.730469 12.169922 L 24.310547 8.75 L 22.660156 8.75 C 21.790156 8.75 20.969375 9.0892188 20.359375 9.6992188 L 16.869141 13.189453 C 16.359141 13.699453 15.68 13.960938 15 13.960938 C 14.32 13.960938 13.640859 13.699453 13.130859 13.189453 L 9.640625 9.6992188 C 9.030625 9.0892187 8.2098437 8.75 7.3398438 8.75 L 5.6894531 8.75 z M 15 17.539062 C 14.7075 17.539062 14.414453 17.649141 14.189453 17.869141 L 10.699219 21.359375 C 9.7992188 22.259375 8.6098437 22.75 7.3398438 22.75 L 7.1894531 22.75 L 12.169922 27.730469 C 13.729922 29.290469 16.270078 29.290469 17.830078 27.730469 L 22.810547 22.75 L 22.660156 22.75 C 21.390156 22.75 20.200781 22.259375 19.300781 21.359375 L 15.810547 17.869141 C 15.585547 17.649141 15.2925 17.539062 15 17.539062 z"/></svg>
+            </li>
+            <li class="footer__payments__item" aria-label="Visa">
+              <img src="https://img.icons8.com/?size=100&id=47905&format=png&color=1a1f71" alt="Visa" width="40" height="26" loading="lazy">
+            </li>
+            <li class="footer__payments__item" aria-label="Mastercard">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="26" aria-hidden="true"><path fill="#FF5F00" d="M15.245 17.831h-6.49V6.168h6.49v11.663z"/><path fill="#EB001B" d="M9.167 12A7.404 7.404 0 0 1 12 6.169 7.417 7.417 0 0 0 0 12a7.417 7.417 0 0 0 11.999 5.831A7.406 7.406 0 0 1 9.167 12z"/><path fill="#F79E1B" d="M24 12a7.417 7.417 0 0 1-12 5.831c1.725-1.358 2.833-3.465 2.833-5.831S13.725 7.527 12 6.169A7.417 7.417 0 0 1 24 12z"/></svg>
+            </li>
+            <li class="footer__payments__item" aria-label="American Express">
+              <img src="https://www.americanexpress.com/content/dam/amex/us/merchant/supplies-uplift/product/images/img-WEBLOGO1-01.jpg" alt="American Express" width="40" height="26" loading="lazy">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__row footer__row--bottom">
+        <div class="footer__block footer__block--copyright">
+          <div class="footer__copyright">
+            <strong class="footer__copyright-title">Copyright © 2026 Animacase. Todos os direitos reservados.</strong>
+            <p class="footer__copyright-text">Todo o conteúdo do site, todas as fotos, imagens, logotipos, marcas, layout, aqui veiculados são de propriedade exclusiva da GO COMÉRCIO DE ARTIGOS ELETRÔNICOS E ACESSÓRIOS LTDA. É vedada qualquer reprodução, total ou parcial, sem expressa autorização.</p>
+            <p class="footer__copyright-text">Rodovia Fernão Dias, Km 9745, S/N, Bairro Dos Pires - Extrema/MG. Complemento: Condomínio VBI Log, Módulo B1, Galpão G7. CEP: 37640-950. GO COMÉRCIO DE ARTIGOS ELETRÔNICOS E ACESSÓRIOS LTDA 22.165.464/0003-52</p>
+            <p class="footer__copyright-text no-bottom-margin">Os preços dos produtos estão sujeitos a alteração sem aviso prévio.</p>
+          </div>
+        </div>
+        <div class="footer__block footer__block--security">
+          <span class="footer__subtitle">Certificados de Segurança</span>
+          <div class="security-seal">
+            <div class="security-seal__list">
+              <div class="security-seal__item" aria-label="Selo RA1000"><img src="https://s3.sa-east-1.amazonaws.com/mkt.qipu.com.br/qipu/seloRA1000.png" alt="Selo RA1000" width="82" height="40" loading="lazy"><span class="security-seal__fallback">SELO RA1000</span></div>
+              <div class="security-seal__item" aria-label="Compra segura"><img src="https://taquirio.com.br/assets/img/selo_loja_segura.webp" alt="Compra segura" width="82" height="40" loading="lazy"><span class="security-seal__fallback">Compra segura</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../js/cart.js"></script>
+</body>
+</html>
