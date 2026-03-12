@@ -4,6 +4,19 @@
  * Estrutura pronta para order bumpers no futuro.
  */
 (function () {
+  // Script de UTMs Utmify (carregado uma única vez)
+  try {
+    if (!window.__utmifyUtmsLoaded) {
+      window.__utmifyUtmsLoaded = true;
+      var u = document.createElement("script");
+      u.setAttribute("src", "https://cdn.utmify.com.br/scripts/utms/latest.js");
+      u.setAttribute("data-utmify-prevent-xcod-sck", "");
+      u.setAttribute("data-utmify-prevent-subids", "");
+      u.setAttribute("async", "");
+      u.setAttribute("defer", "");
+      (document.head || document.documentElement).appendChild(u);
+    }
+  } catch (e) {}
   const STORAGE_KEY = 'animacase_cart';
   const PRICE_SALE = 34.90;
   const PRICE_REGULAR = 47.90;
@@ -296,6 +309,14 @@
     document.getElementById('cart-checkout')?.addEventListener('click', function () {
       const items = getCart();
       if (items.length === 0) return;
+      try {
+        // Disparo do initiate_checkout antes de ir para o checkout
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'initiate_checkout',
+          items_count: items.length
+        });
+      } catch (e) {}
       var path = window.location.pathname || '';
       var checkoutUrl = (path.indexOf('/produto/') !== -1 || path.indexOf('/animes/') !== -1) ? '../checkout.html' : 'checkout.html';
       window.location.href = checkoutUrl;
