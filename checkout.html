@@ -50,6 +50,12 @@
         document.head.appendChild(a);
       } catch (e) {}
     })();
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'initiate_checkout'
+      });
+    } catch (e) {}
   </script>
 </head>
 <body class="checkout-page">

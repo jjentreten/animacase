@@ -309,14 +309,6 @@
     document.getElementById('cart-checkout')?.addEventListener('click', function () {
       const items = getCart();
       if (items.length === 0) return;
-      try {
-        // Disparo do initiate_checkout antes de ir para o checkout
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          event: 'initiate_checkout',
-          items_count: items.length
-        });
-      } catch (e) {}
       var path = window.location.pathname || '';
       var checkoutUrl = (path.indexOf('/produto/') !== -1 || path.indexOf('/animes/') !== -1) ? '../checkout.html' : 'checkout.html';
       window.location.href = checkoutUrl;
