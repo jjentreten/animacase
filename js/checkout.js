@@ -10,6 +10,7 @@
   const SHIPPING_EXPRESS_PRICE = 19.90;
 
   const COUPONS = { ANIMACASE10: { actual: 10, display: 10 } };
+  const COUPON_PIX_ONLY = 'ANIMACASE10'; // cupom válido apenas para PIX
   var appliedCoupon = null;
 
   function getCouponByCode(code) {
@@ -368,6 +369,51 @@
     stepPayment.setAttribute('aria-expanded', stepNum === 3 ? 'true' : 'false');
     stepPayment.querySelector('.step-checkout__card-teaser')?.classList.toggle('step-checkout__card-teaser--hidden', stepNum === 3);
     stepPayment.querySelector('.step-checkout__card-content')?.classList.toggle('step-checkout__card-content--hidden', stepNum !== 3);
+    if (stepNum === 3) updatePaymentOptionsForCoupon();
+  }
+
+  function updateDiscountSectionState() {
+    var input = document.getElementById('checkout-discount-input');
+    var btn = document.getElementById('checkout-apply-discount');
+    var badge = document.getElementById('checkout-coupon-badge');
+    if (!input || !btn) return;
+    if (appliedCoupon) {
+      input.readOnly = true;
+      input.classList.add('is-applied');
+      btn.disabled = true;
+      btn.textContent = 'Cupom aplicado';
+      btn.classList.add('is-applied');
+      if (badge) badge.style.display = 'none';
+    } else {
+      input.readOnly = false;
+      input.classList.remove('is-applied');
+      btn.disabled = false;
+      btn.textContent = 'Aplicar';
+      btn.classList.remove('is-applied');
+      if (badge) badge.style.display = 'inline-flex';
+    }
+  }
+
+  function updatePaymentOptionsForCoupon() {
+    var cardOption = document.querySelector('.checkout-form__payment-option--card');
+    var cardRadio = document.getElementById('checkout-payment-card');
+    var pixRadio = document.getElementById('checkout-payment-pix');
+    var msgEl = document.getElementById('checkout-coupon-pix-only');
+    if (!cardOption || !cardRadio || !pixRadio) return;
+    var restrictToPix = appliedCoupon === COUPON_PIX_ONLY;
+    if (restrictToPix) {
+      cardOption.classList.add('is-disabled');
+      cardRadio.disabled = true;
+      if (msgEl) msgEl.style.display = 'flex';
+      if (cardRadio.checked) {
+        pixRadio.checked = true;
+        if (typeof updateParcelasOptions === 'function') updateParcelasOptions();
+      }
+    } else {
+      cardOption.classList.remove('is-disabled');
+      cardRadio.disabled = false;
+      if (msgEl) msgEl.style.display = 'none';
+    }
   }
 
   function validateStep1(formCustomer) {
@@ -660,6 +706,15 @@
       if (validateStep2(formShipping)) goToStep(3);
     });
 
+    document.getElementById('checkout-coupon-badge')?.addEventListener('click', function () {
+      if (this.disabled) return;
+      var input = document.getElementById('checkout-discount-input');
+      var applyBtn = document.getElementById('checkout-apply-discount');
+      if (input && applyBtn) {
+        input.value = 'ANIMACASE10';
+        applyBtn.click();
+      }
+    });
     document.getElementById('checkout-apply-discount')?.addEventListener('click', function () {
       var input = document.getElementById('checkout-discount-input');
       var code = input?.value?.trim();
@@ -674,8 +729,12 @@
         alert('Cupom ' + coupon.code + ' aplicado! Você ganhou ' + (coupon.displayPercent != null ? coupon.displayPercent : coupon.percent) + '% de desconto.');
         renderSummary(getCart());
         updateCheckoutShippingAndTotal();
+        updatePaymentOptionsForCoupon();
+        updateDiscountSectionState();
       } else {
         appliedCoupon = null;
+        updatePaymentOptionsForCoupon();
+        updateDiscountSectionState();
         alert('Código de desconto não encontrado. Verifique e tente novamente.');
       }
     });

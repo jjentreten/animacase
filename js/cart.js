@@ -124,7 +124,7 @@
             <ul class="cart-drawer__items" id="cart-items-list"></ul>
           </div>
 
-          <section class="cart-drawer__recommendations" id="cart-recommendations-section">
+          <section class="cart-drawer__recommendations cart-drawer__recommendations--hidden" id="cart-recommendations-section" aria-hidden="true">
             <h3>Leve um quadro do seu anime favorito!</h3>
             <div class="cart-recommendation">
               <div class="cart-recommendation__track" id="cart-recommendation-track">
@@ -178,7 +178,7 @@
           ? '<span>' + formatPrice(priceSale) + '</span>'
           : '<span>' + formatPrice(priceSale) + '</span><s>' + formatPrice(priceRegular) + '</s>';
       const variantRaw = item.variant ? String(item.variant).trim() : '';
-      const variantLabel = variantRaw ? ('Modelo: ' + formatVariantDisplay(variantRaw)) : 'Capa Reflexiva 3M';
+      const variantLabel = variantRaw ? ('Modelo: ' + formatVariantDisplay(variantRaw)) : 'Capa Refletiva 3M';
       return (
         '<li class="cart-drawer__item" data-id="' + escapeAttr(item.id) + '">' +
           '<img src="' + escapeAttr(item.image) + '" alt="' + escapeAttr(item.name) + '" class="cart-drawer__item-img">' +
@@ -203,7 +203,8 @@
     const countEls = document.querySelectorAll('.cart-count');
     countEls.forEach(el => {
       el.textContent = items.length;
-      el.style.display = items.length ? '' : 'none';
+      el.style.display = items.length ? 'flex' : 'none';
+      el.setAttribute('aria-hidden', items.length ? 'false' : 'true');
     });
 
     const label = document.getElementById('cart-count-label');
@@ -260,7 +261,7 @@
     const id = 'item_' + Date.now() + '_' + Math.random().toString(36).slice(2);
     const item = {
       id,
-      name: product.name || 'Capa Reflexiva 3M',
+      name: product.name || 'Capa Refletiva 3M',
       image: product.image || '',
       url: product.url || '',
       priceSale: product.priceSale != null ? parsePrice(product.priceSale) : PRICE_SALE,

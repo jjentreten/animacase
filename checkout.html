@@ -31,17 +31,25 @@
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="css/checkout.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
 </head>
 <body class="checkout-page">
   <a href="#checkout-main" class="checkout__skip-link">Pular para o conteúdo</a>
-
-  <div class="checkout">
-    <header class="checkout__header">
-      <a href="index.html" class="checkout__banner">
-        <img src="assets/logoanimacase-deitado.png" alt="Animacase" class="checkout__banner-img">
+  <!-- Header minimalista do checkout (fixo, 100% largura) -->
+  <header class="checkout-header" id="checkout-header">
+    <div class="checkout-header__promo" role="status" aria-live="polite">
+      <span class="checkout-header__promo-icon" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </span>
+      <span class="checkout-header__promo-text">Oferta reservada por <strong class="js-offer-timer">15:00</strong></span>
+    </div>
+    <div class="checkout-header__logo-bar">
+      <a href="index.html" class="checkout-header__banner" aria-label="Animacase - Voltar à loja">
+        <img src="assets/logoanimacase-deitado.png" alt="animacase." class="checkout-header__banner-img">
       </a>
-    </header>
-
+    </div>
+  </header>
+  <div class="checkout">
     <main id="checkout-main" class="checkout__main page-width">
       <h1 class="checkout__main-title visually-hidden">Finalizar compra - Animacase</h1>
 
@@ -63,7 +71,10 @@
               <p class="checkout-summary__scroll-hint" id="checkout-scroll-hint" aria-hidden="true">Role para ver mais itens</p>
             </section>
             <section class="checkout-summary__discount-section">
-              <h3 id="checkout-discount-heading" class="checkout-summary__section-title">Código de desconto ou vale</h3>
+              <div class="checkout-summary__discount-heading-row">
+                <h3 id="checkout-discount-heading" class="checkout-summary__section-title">Código de desconto ou vale</h3>
+                <button type="button" class="checkout-coupon-badge" id="checkout-coupon-badge" aria-label="Aplicar cupom ANIMACASE10">🎟️ 1 cupom disponível</button>
+              </div>
               <div class="checkout-summary__discount-code">
                 <input type="text" id="checkout-discount-input" placeholder="Código de desconto ou vale" aria-labelledby="checkout-discount-heading">
                 <button type="button" class="checkout-summary__apply-btn" id="checkout-apply-discount">Aplicar</button>
@@ -338,6 +349,13 @@
                   </header>
                   <section class="checkout-form__section" aria-labelledby="payment-heading">
                     <h3 id="payment-heading" class="checkout-form__title visually-hidden">Forma de pagamento</h3>
+                    <div class="checkout-form__coupon-pix-only" id="checkout-coupon-pix-only" style="display: none;" role="status">
+                      <div class="checkout-form__coupon-pix-only__top">
+                        <i class="fa-solid fa-tag checkout-form__coupon-pix-only__icon" aria-hidden="true"></i>
+                        <span class="checkout-form__coupon-pix-only__main">ANIMACASE10</span>
+                      </div>
+                      <p class="checkout-form__coupon-pix-only__sub">Válido apenas para pagamento via PIX</p>
+                    </div>
                     <p class="checkout-form__secure-note">Todas as transações são seguras e criptografadas. Seu pedido inclui trocas gratuitas e atendimento ao cliente.</p>
                     <div class="checkout-form__payment-methods">
                       <div class="checkout-form__payment-option checkout-form__payment-option--card" data-payment="card">
@@ -461,6 +479,7 @@
     </footer>
   </div>
 
+  <script src="js/offer-timer.js"></script>
   <script src="js/checkout.js"></script>
 </body>
 </html>
