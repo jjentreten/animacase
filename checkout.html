@@ -42,17 +42,29 @@
   <script>
     window.pixelId = "69b30da5658926c749f4ba94";
     (function () {
+      var icSent = false;
+      function fireInitiateCheckout() {
+        if (icSent) return;
+        try {
+          if (typeof window.fbq === 'function') {
+            window.fbq('track', 'InitiateCheckout');
+            icSent = true;
+          }
+        } catch (e) {}
+      }
       try {
         var a = document.createElement("script");
         a.setAttribute("async", "");
         a.setAttribute("defer", "");
         a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
         a.onload = function () {
-          try {
-            if (window.fbq) {
-              window.fbq('track', 'InitiateCheckout');
-            }
-          } catch (e) {}
+          fireInitiateCheckout();
+          var attempts = 0;
+          var t = setInterval(function () {
+            if (icSent || attempts > 50) { clearInterval(t); return; }
+            fireInitiateCheckout();
+            attempts++;
+          }, 100);
         };
         document.head.appendChild(a);
       } catch (e) {}
