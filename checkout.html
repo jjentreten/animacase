@@ -47,6 +47,13 @@
         a.setAttribute("async", "");
         a.setAttribute("defer", "");
         a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+        a.onload = function () {
+          try {
+            if (window.fbq) {
+              window.fbq('track', 'InitiateCheckout');
+            }
+          } catch (e) {}
+        };
         document.head.appendChild(a);
       } catch (e) {}
     })();
